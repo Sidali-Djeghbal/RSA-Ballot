@@ -37,9 +37,16 @@ The implementation of this secure e-voting architecture relies on a combination 
 ### Source Code & Workflow
 
 - **Project Repository:** [RSA-Ballot (GitHub)](https://github.com/Sidali-Djeghbal/RSA-Ballot/)
+    
+- **Branching Strategy:** The repository is structured across three distinct branches to separate development concerns:
+    
+    - `backend`: Dedicated to the Python server, SQLite database, and cryptographic verification logic.
+        
+    - `frontend`: Dedicated to the CustomTkinter desktop client, UI rendering, and local key generation.
+        
+    - `main`: The stable integration branch. Development occurs in the `backend` and `frontend` branches, which will be merged into `main` exclusively for final testing and the final academic deliverable.
         
 - **Task Management:** A GitHub Project board will be established to track feature implementation, monitor cryptographic milestones, and ensure delivery before the April 30, 2026 deadline.
-    
 
 ### Development Tools & Frameworks
 
