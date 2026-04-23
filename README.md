@@ -56,7 +56,8 @@ The implementation of this secure e-voting architecture relies on a combination 
     
 - **[Cryptography.io](https://cryptography.io/en/latest/):** The Python standard for robust, production-grade cryptographic primitives (utilized specifically for the Diffie-Hellman exchange and AES-256 Fernet encryption).
     
-- **Python Standard Library:** * `socket` (TCP network transmission)
+- **Python Standard Library:**
+    - `socket` (TCP network transmission)
     
     - `hashlib` (SHA-256 fingerprinting)
         
