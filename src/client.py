@@ -27,7 +27,7 @@ def main():
     app.columnconfigure(0, weight=1)
     
     # Widgets
-    form = ctk.CTkFrame(app, width=350, corner_radius=12)
+    form = ctk.CTkFrame(app, width=350, corner_radius=4)
     form.grid(row=0, column=0)
     form.grid_propagate(False)
     form.columnconfigure(0, weight=1)
@@ -40,19 +40,19 @@ def main():
         pady=(20, 0),
     )
 
-    select = ctk.CTkOptionMenu(form, values=ALL_CANDIDATES, command=update_selected_candidate).grid(
+    ctk.CTkOptionMenu(form, values=ALL_CANDIDATES, command=update_selected_candidate).grid(
         row=1,
         column=0,
         sticky="ew",
         padx=30,
     )
     
-    button = ctk.CTkButton(form, text="Send vote", command=on_submit).grid(
+    ctk.CTkButton(form, text="Send vote", command=on_submit).grid(
         row=2,
         column=0,
         sticky="ew",
         padx=30,
-        pady=(20, 30),
+        pady=10,
     )
     
     # Loop
