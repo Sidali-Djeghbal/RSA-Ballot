@@ -10,51 +10,26 @@ the system utilizes a client desktop app and a centralized listening server, tra
 
 - **Frontend (Client):** `CustomTkinter` — provides a hardware-accelerated, modern desktop GUI. It operates nativelly in Python, allowing direct access to the OS file system for secure RSA Private Key storage and seamless execution of heavy cryptographique math without browser sandbox limits.
     
-- **Backend (Election Authority):** Python `socket` / `FastAPI` — A robust listening server handling concurrent connections, payload validation, and database persistence.
+- **Backend (Election Authority):** Python `socket` — A robust listening server handling concurrent connections, payload validation, and database persistence.
     
 - **Data Serialization:** Strict JSON structures for network transmission.
 
-## 3. system componennts 
+Optimizing tool selection...I’ll inspect the current README first so I can draft a clean “Project Setup” section that fits your existing content and style.
 
-### repo structure
+Read [](file:///home/unknown/RSA-Ballot/README.md)
 
-```
-RSA-Ballot/
-├── frontend/
-│   ├── app.py                 # CustomTkinter UI rendering
-│   ├── crypto_engine.py       # local RSA KeyGen, DHE logic..
-│   └── keys/                  # local directory for the Private Key
-├── backend/
-│   ├── server.py              # socket listener / API router
-│   ├── verification.py        # signature validation and DHE parameter generation
-│   └── database/              # SQLite DB for registered_keys and stored_commitments
-```
+I can’t directly modify files in the current Ask mode, but here is an exact section you can paste into README.md under the Technology Stack section.
 
 ## 4. References & Version Control
 
 The implementation of this secure e-voting architecture relies on a combination of foundational cryptographic literature and modern Python frameworks. Development is managed via strict Git version control to ensure a stable integration.
 
-### Source Code & Workflow
-
-- **Project Repository:** [RSA-Ballot (GitHub)](https://github.com/Sidali-Djeghbal/RSA-Ballot/)
-    
-- **Branching Strategy:** The repository is structured across three distinct branches to separate development concerns:
-    
-    - `backend`: Dedicated to the Python server, SQLite database, and cryptographic verification logic.
-        
-    - `frontend`: Dedicated to the CustomTkinter desktop client, UI rendering, and local key generation.
-        
-    - `main`: The stable integration branch. Development occurs in the `backend` and `frontend` branches, which will be merged into `main` exclusively for final testing and the final academic deliverable.
-        
-- **Task Management:** A GitHub Project board will be established to track feature implementation, monitor cryptographic milestones, and ensure delivery before the April 30, 2026 deadline.
 
 ### Development Tools & Frameworks
 
 - **Python 3.10+:** The core runtime environment.
     
 - **[CustomTkinter](https://customtkinter.tomschimansky.com/):** A hardware-accelerated UI framework used to construct the modern, dark-mode desktop client natively in Python.
-    
-- **[Cryptography.io](https://cryptography.io/en/latest/):** The Python standard for robust, production-grade cryptographic primitives (utilized specifically for the Diffie-Hellman exchange and AES-256 Fernet encryption).
     
 - **Python Standard Library:**
     - `socket` (TCP network transmission)
@@ -65,10 +40,52 @@ The implementation of this secure e-voting architecture relies on a combination 
         
     - `sqlite3` (Database persistence)
 
+
+## 3. Project Setup
+
+### Prerequisites:
+- Python 3.10+ (or your project Python version)
+- Tk runtime for CustomTkinter
+- pip and venv
+
+#### Install Tk (choose your distro):
+- Debian/Ubuntu:
+    sudo apt update && sudo apt install -y tk8.6 python3-tk
+- Fedora:
+    sudo dnf install -y tk python3-tkinter
+- Arch:
+    sudo pacman -S tk
+
+#### Create and activate virtual environment:
+    python -m venv .env
+    source .env/bin/activate
+
+#### dependencies:
+    pip install --upgrade pip
+    pip install -r requirements.txt
+
+#### Verify Tk is available:
+    python -c "import tkinter; print('Tk OK', tkinter.TkVersion)"
+
+#### Run the client:
+    python client.py
+
+### Troubleshooting:
+- If you see ImportError: libtk8.6.so: cannot open shared object file:
+  - Tk system package is missing, or
+  - you are using a different Python interpreter than the one where Tk is available.
+- Check interpreter path:
+    which python
+    python -c "import sys; print(sys.executable)"
+
+### Optional clean start:
+    deactivate
+    rm -rf .env
+    python -m venv .env
+    source .env/bin/activate
+    pip install -r requirements.txt
+
+
 ### Cryptographic References & Literature
 
 - **The RSA Algorithm:** Rivest, R. L., Shamir, A., & Adleman, L. (1978). _A Method for Obtaining Digital Signatures and Public-Key Cryptosystems_. Communications of the ACM. [Read Paper (PDF)](https://people.csail.mit.edu/rivest/Rsapaper.pdf)
-
-- **Pedersen Commitment Schemes:** Pedersen, T. P. (1991). _Non-Interactive and Information-Theoretic Secure Verifiable Secret Sharing_. Advances in Cryptology — CRYPTO '91. This paper provides the mathematical foundation for the "Absolute Secrecy" locked-box mechanism. [Springer Link](https://link.springer.com/chapter/10.1007/3-540-46766-1_9)
-    
-- **Perfect Forward Secrecy (PFS):** An overview of the Diffie-Hellman Ephemeral (DHE) key exchange and its critical role in preventing retrospective decryption of intercepted network traffic. [RFC 2631 - Diffie-Hellman Key Agreement Method](https://datatracker.ietf.org/doc/html/rfc2631)
