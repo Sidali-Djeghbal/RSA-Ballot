@@ -2,83 +2,71 @@
 
 ## 1. Project Overview
 
-this project implements a decentralized, zero-knowledge e-voting system built entirely in pyton. designed to meet enginering standards, the system resolves the fundamentals paradox of digital elections: mathematicaly proving the voter's identity to an election commmission while guaranting the absolute secrecy of ballot content.
-
-the system utilizes a client desktop app and a centralized listening server, transmitting strict JSON payloads over a secure conection. it uses asymmetrique encryption.
+This repository contains a prototype secure e-voting system implemented in Python. It demonstrates a desktop client built with CustomTkinter and a server component that receives and verifies votes. The design focuses on clear, auditable JSON payloads, cryptographic integrity (RSA), and local key handling for the client.
 
 ## 2. Technology Stack
 
-- **Frontend (Client):** `CustomTkinter` — provides a hardware-accelerated, modern desktop GUI. It operates nativelly in Python, allowing direct access to the OS file system for secure RSA Private Key storage and seamless execution of heavy cryptographique math.
-    
-- **Backend (Election Authority):** Python `socket` — A robust listening server handling concurrent connections, payload validation, and database persistence.
-    
-- **Data Serialization:** Strict JSON structures for network transmission.
-
-## 4. References & Version Control
-
-The implementation of this secure e-voting architecture relies on a combination of foundational cryptographic literature and modern Python frameworks. Development is managed via strict Git version control to ensure a stable integration.
-
-### Development Tools & Frameworks
-
-- **Python 3.10+:** The core runtime environment.
-    
-- **[CustomTkinter](https://customtkinter.tomschimansky.com/):** A hardware-accelerated UI framework used to construct the modern, dark-mode desktop client natively in Python.
-    
-- **Python Standard Library:**
-    - `socket` (TCP network transmission)
-    
-    - `hashlib` (SHA-256 fingerprinting)
-        
-    - `json` (Payload serialization)
-        
-    - `sqlite3` (Database persistence)
+- **Client (Desktop):** CustomTkinter (modern Python desktop UI)
+- **Server / Network:** Python `socket` (simple TCP listener)
+- **Storage & Serialization:** `sqlite3` and JSON
 
 
 ## 3. Project Setup
 
-### Prerequisites:
-- Python 3.10+
-- Tk runtime for CustomTkinter
-- pip and venv
+Prerequisites
+- Python 3.10 or newer
+- System Tk runtime (required by `tkinter` / CustomTkinter)
+- `pip` and `venv` available
 
-#### Install Tk (choose your distro):
-- Debian/Ubuntu:
-    sudo apt update && sudo apt install -y tk8.6 python3-tk
-- Fedora:
-    sudo dnf install -y tk python3-tkinter
-- Arch:
-    sudo pacman -S tk
+Install system Tk (pick your distro):
 
-#### Create and activate virtual environment:
-    python -m venv .env
-    source .env/bin/activate
+```bash
+# Debian / Ubuntu
+sudo apt update && sudo apt install -y tk8.6 python3-tk
 
-#### dependencies:
-    pip install --upgrade pip
-    pip install -r requirements.txt
+# Fedora
+sudo dnf install -y tk python3-tkinter
 
-#### Verify Tk is available:
-    python -c "import tkinter; print('Tk OK', tkinter.TkVersion)"
+# Arch
+sudo pacman -S tk
+```
 
-#### Run the client:
-    python client.py
+Create and activate a virtual environment, install Python deps:
 
-### Troubleshooting:
-- If you see ImportError: libtk8.6.so: cannot open shared object file:
-  - Tk system package is missing, or
-  - you are using a different Python interpreter than the one where Tk is available.
-- Check interpreter path:
-    which python
-    python -c "import sys; print(sys.executable)"
+```bash
+python -m venv .env
+source .env/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+```
 
-### Optional clean start:
-    deactivate
-    rm -rf .env
-    python -m venv .env
-    source .env/bin/activate
-    pip install -r requirements.txt
+Verify Tkinter availability:
 
+```bash
+python -c "import tkinter; print('Tk OK', tkinter.TkVersion)"
+```
 
-### Cryptographic References & Literature
+Run the client (from project root):
 
-- **The RSA Algorithm:** Rivest, R. L., Shamir, A., & Adleman, L. (1978). _A Method for Obtaining Digital Signatures and Public-Key Cryptosystems_. Communications of the ACM. [Read Paper (PDF)](https://people.csail.mit.edu/rivest/Rsapaper.pdf)
+```bash
+python src/client.py
+```
+
+Troubleshooting
+- If you get "ImportError: libtk8.6.so: cannot open shared object file": install the system Tk package for your distribution and ensure you run the Python interpreter that has access to that Tk installation (the `which python` / `python -c "import sys; print(sys.executable)"` commands help verify the interpreter path).
+- If you use multiple Python versions or virtual environments, recreate the venv with the same `python` executable you plan to run.
+
+Optional: clean start
+
+```bash
+deactivate || true
+rm -rf .env
+python -m venv .env
+source .env/bin/activate
+pip install -r requirements.txt
+```
+
+## 4. References
+
+- Rivest, R. L., Shamir, A., & Adleman, L. (1978). A Method for Obtaining Digital Signatures and Public-Key Cryptosystems. [PDF](https://people.csail.mit.edu/rivest/Rsapaper.pdf)
+
