@@ -2,28 +2,21 @@
 
 ## 1. Project Overview
 
-this project implements a decentralized, zero-knowledge e-voting system built entirely in pyton. designed to meet advanced enginering standards, the system resolves the fundamentals paradox of digital elections: mathematicaly proving the voter's identity to an election commmission while guaranting the absolute secrecy of ballot content.
+this project implements a decentralized, zero-knowledge e-voting system built entirely in pyton. designed to meet enginering standards, the system resolves the fundamentals paradox of digital elections: mathematicaly proving the voter's identity to an election commmission while guaranting the absolute secrecy of ballot content.
 
 the system utilizes a client desktop app and a centralized listening server, transmitting strict JSON payloads over a secure conection. it uses asymmetrique encryption.
 
 ## 2. Technology Stack
 
-- **Frontend (Client):** `CustomTkinter` — provides a hardware-accelerated, modern desktop GUI. It operates nativelly in Python, allowing direct access to the OS file system for secure RSA Private Key storage and seamless execution of heavy cryptographique math without browser sandbox limits.
+- **Frontend (Client):** `CustomTkinter` — provides a hardware-accelerated, modern desktop GUI. It operates nativelly in Python, allowing direct access to the OS file system for secure RSA Private Key storage and seamless execution of heavy cryptographique math.
     
 - **Backend (Election Authority):** Python `socket` — A robust listening server handling concurrent connections, payload validation, and database persistence.
     
 - **Data Serialization:** Strict JSON structures for network transmission.
 
-Optimizing tool selection...I’ll inspect the current README first so I can draft a clean “Project Setup” section that fits your existing content and style.
-
-Read [](file:///home/unknown/RSA-Ballot/README.md)
-
-I can’t directly modify files in the current Ask mode, but here is an exact section you can paste into README.md under the Technology Stack section.
-
 ## 4. References & Version Control
 
 The implementation of this secure e-voting architecture relies on a combination of foundational cryptographic literature and modern Python frameworks. Development is managed via strict Git version control to ensure a stable integration.
-
 
 ### Development Tools & Frameworks
 
@@ -44,7 +37,7 @@ The implementation of this secure e-voting architecture relies on a combination 
 ## 3. Project Setup
 
 ### Prerequisites:
-- Python 3.10+ (or your project Python version)
+- Python 3.10+
 - Tk runtime for CustomTkinter
 - pip and venv
 
