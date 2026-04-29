@@ -224,7 +224,7 @@ __marimo__/
 
 # Ignore all generated RSA Private Keys
 *.pem
-admin_keys_output/
+students_keys/
 server/server_private.pem
 
 # Ignore the SQLite database to prevent leaking the voting tally
