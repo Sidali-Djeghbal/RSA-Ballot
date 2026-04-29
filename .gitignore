@@ -216,3 +216,20 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+
+# =========================
+# Secure E-Voting Specific
+# =========================
+
+# Ignore all generated RSA Private Keys
+*.pem
+admin_keys_output/
+server/server_private.pem
+
+# Ignore the SQLite database to prevent leaking the voting tally
+server/election.db
+election.db
+
+# Ignore any local JSON persistence fallbacks
+*.json
