@@ -3,8 +3,6 @@
 
 This project was built as an educational demonstration of modern cryptography principles, implementing RSA math from scratch without relying on high-level encryption wrappers.
 
----
-
 ## Cryptographic Guarantees
 
 This system ensures five core pillars of secure elections:
@@ -16,8 +14,6 @@ This system ensures five core pillars of secure elections:
 | **Integrity** | SHA-256 Hashing | A network interceptor cannot flip bits to change a vote from "Candidate A" to "Candidate C". |
 | **Uniqueness** | SQLite State Management | Double-voting is strictly prevented; voters are marked after participating. |
 | **Relative Anonymity**| Segregated Server Logic | The server verifies the signature (the *who*) separately from tallying the vote (the *what*). |
-
----
 
 ## Project Structure
 
@@ -38,7 +34,6 @@ RSA_Ballot/
 ├── .gitignore                  # Version control exclusions for security
 └── README.md                   # Project documentation
 ```
-
 
 ## Getting Started
 
@@ -86,8 +81,6 @@ python3 client/client.py
 2. Navigate to the `students_keys/` folder and select one of the `Student_XX.pem` files.
 3. Select your preferred candidate and click **"submit secure vote"**.
 4. Check the Server terminal to see the cryptography in action! Try voting again with the exact same `.pem` file to test the anti-double-vote system.
-
----
 
 ## Educational Limitations
 This project contains intentional educational simplifications:
