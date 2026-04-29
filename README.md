@@ -1,72 +1,96 @@
-# Secure E-Voting System
 
-## 1. Project Overview
+# Secure E-Voting System (Client-Server)
 
-This repository contains a prototype secure e-voting system implemented in Python. It demonstrates a desktop client built with CustomTkinter and a server component that receives and verifies votes. The design focuses on clear, auditable JSON payloads, cryptographic integrity (RSA), and local key handling for the client.
+This project was built as an educational demonstration of modern cryptography principles, implementing RSA math from scratch without relying on high-level encryption wrappers.
 
-## 2. Technology Stack
+---
 
-- **Client (Desktop):** CustomTkinter (modern Python desktop UI)
-- **Server / Network:** Python `socket` (simple TCP listener)
-- **Storage & Serialization:** `sqlite3` and JSON
+## Cryptographic Guarantees
 
+This system ensures five core pillars of secure elections:
 
-## 3. Project Setup
+| Security Challenge | Technical Solution | Practical Result |
+| :--- | :--- | :--- |
+| **Confidentiality** | Server's Public Key Encryption | The message is unreadable during transit; no one on the network can see the vote. |
+| **Authenticity** | Client's Private Key Signature | The server mathematically verifies that the vote originated from a specific registered voter. |
+| **Integrity** | SHA-256 Hashing | A network interceptor cannot flip bits to change a vote from "Candidate A" to "Candidate C". |
+| **Uniqueness** | SQLite State Management | Double-voting is strictly prevented; voters are marked after participating. |
+| **Relative Anonymity**| Segregated Server Logic | The server verifies the signature (the *who*) separately from tallying the vote (the *what*). |
 
-Prerequisites
-- Python 3.10 or newer
-- System Tk runtime (required by `tkinter` / CustomTkinter)
-- `pip` and `venv` available
+---
 
-Install system Tk (pick your distro):
+## Project Structure
 
-```bash
-# Debian / Ubuntu
-sudo apt update && sudo apt install -y tk8.6 python3-tk
-
-# Fedora
-sudo dnf install -y tk python3-tkinter
-
-# Arch
-sudo pacman -S tk
+```text
+RSA_Ballot/
+├── common/                     # Shared logic needed by both client and server
+│   └── rsa_core.py             # Custom RSA mathematical engine and hashing logic
+├── server/                     # The Central Authority (Digital Ballot Box)
+│   ├── server.py               # Socket listener and SQLite logic
+│   └── election.db             # Auto-generated SQLite database (IGNORED IN GIT)
+├── client/                     # The Voter Interface
+│   ├── client.py               # Modern CustomTkinter GUI
+│   └── assets/                 # UI resources (e.g., avatar images)
+├── scripts/                    # Admin/Initialization Utilities
+│   └── setup_election.py       # Generates cohort keys, server keys, and initializes DB
+├── students_keys/              # Auto-generated directory containing Voter .pem files (IGNORED IN GIT)
+├── requirements.txt            # UI dependencies
+├── .gitignore                  # Version control exclusions for security
+└── README.md                   # Project documentation
 ```
 
-Create and activate a virtual environment, install Python deps:
+
+## Getting Started
+
+### Prerequisites & Installation
+Ensure you have Python 3.x installed. It is highly recommended to use a virtual environment to manage the GUI dependencies cleanly.
 
 ```bash
-python -m venv .env
-source .env/bin/activate
-pip install --upgrade pip
+# 1. Create and activate a virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
+
+# 2. Install the required GUI libraries
 pip install -r requirements.txt
 ```
 
-Verify Tkinter availability:
+### Step 1: Initialize the Election
+Before anyone can vote, the election administrator must generate the cryptographic keys for the server and the registered voters, and set up the SQLite database.
 
 ```bash
-python -c "import tkinter; print('Tk OK', tkinter.TkVersion)"
+python3 scripts/setup_election.py
 ```
+* **What this does:** 
+1. Generates `server/server_private.pem` (The Server's Private Key).
+2. Generates 30 `.pem` files in `students_keys/` (The Voters' Private Keys).
+3. Initializes `server/election.db` with the public keys of all voters.
 
-Run the client (from project root):
+### Step 2: Start the Digital Ballot Box (Server)
+Open a terminal and start the server so it can listen for incoming secure votes.
 
 ```bash
-python src/client.py
+python3 server/server.py
 ```
+* **Note:** Leave this terminal running in the background. It will silently log identity verifications without leaking the actual votes.
 
-Troubleshooting
-- If you get "ImportError: libtk8.6.so: cannot open shared object file": install the system Tk package for your distribution and ensure you run the Python interpreter that has access to that Tk installation (the `which python` / `python -c "import sys; print(sys.executable)"` commands help verify the interpreter path).
-- If you use multiple Python versions or virtual environments, recreate the venv with the same `python` executable you plan to run.
-
-Optional: clean start
+### Step 3: Launch the Voter Interface (Client)
+Open a **new terminal window**, activate your virtual environment again, and launch the UI:
 
 ```bash
-deactivate || true
-rm -rf .env
-python -m venv .env
-source .env/bin/activate
-pip install -r requirements.txt
+source .venv/bin/activate
+python3 client/client.py
 ```
 
-## 4. References
+### How to Vote
+1. On the client GUI, click **"load identity (.pem)"**.
+2. Navigate to the `students_keys/` folder and select one of the `Student_XX.pem` files.
+3. Select your preferred candidate and click **"submit secure vote"**.
+4. Check the Server terminal to see the cryptography in action! Try voting again with the exact same `.pem` file to test the anti-double-vote system.
 
-- Rivest, R. L., Shamir, A., & Adleman, L. (1978). A Method for Obtaining Digital Signatures and Public-Key Cryptosystems. [PDF](https://people.csail.mit.edu/rivest/Rsapaper.pdf)
+---
 
+## Educational Limitations
+This project contains intentional educational simplifications:
+* **Small Prime Numbers:** The RSA key generator uses small prime numbers (100–500) to keep the mathematics traceable and human-readable during demonstrations.
+* **No Padding:** Standard RSA padding (like OAEP) is omitted to simplify the core `rsa_core.py` engine.
+* **Out-of-Band Key Distribution:** In a real-world scenario, the `.pem` files generated in the `students_keys/` folder would be physically distributed to voters on secure USB drives after verifying physical identification.
