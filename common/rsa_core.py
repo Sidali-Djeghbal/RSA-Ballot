@@ -16,7 +16,7 @@ def int_to_text(candidate_number):
         20: "Candidate B",
         30: "Candidate C"
     }
-    return mapping.get(candidate_number, "Unknown") # hint: look closely at the spelling here
+    return mapping.get(candidate_number, "Unknown")
 
 # rsa encryption c = m^e mod n
 def encrypt(message_int, public_e, public_n):
