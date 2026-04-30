@@ -51,12 +51,14 @@ def handle_voter_client(client_connection, client_address, server_d, server_n):
         
         if not database_row:
             client_connection.send(json.dumps({"status": "error", "message": "voter id not found."}).encode())
+            print("[!] Could not verify voter id! voter could be bad actor, throwing away vote...")
             return
             
         student_e, student_n, student_has_voted = database_row
         
         if student_has_voted == 1:
             client_connection.send(json.dumps({"status": "error", "message": "this student already voted!"}).encode())
+            print("[!] Voter tried to vote multiple times! throwing away vote...")
             return
             
         # check signature matches
@@ -64,8 +66,11 @@ def handle_voter_client(client_connection, client_address, server_d, server_n):
         
         if not is_signature_valid:
             client_connection.send(json.dumps({"status": "error", "message": "fake signature detected!"}).encode())
+            print("[!] Could not verify voter id! voter could be bad actor, throwing away vote...")
             return
             
+        print("[+] Voter identity verified.")
+
         # decrypt the ballot using the dynamically loaded key
         message_int = rsa_core.decrypt(cipher_int, server_d, server_n)
         candidate_text = rsa_core.int_to_text(message_int)
