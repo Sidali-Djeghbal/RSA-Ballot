@@ -75,7 +75,7 @@ def handle_voter_client(client_connection, client_address, server_d, server_n):
         message_int = rsa_core.decrypt(cipher_int, server_d, server_n)
         candidate_text = rsa_core.int_to_text(message_int)
         
-        if candidate_text == "Unknown":
+        if candidate_text is None:
             client_connection.send(json.dumps({"status": "error", "message": "corrupted vote data."}).encode())
             return
             

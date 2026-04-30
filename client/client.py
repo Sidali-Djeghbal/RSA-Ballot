@@ -44,7 +44,7 @@ class CandidateCardWidget(ctk.CTkFrame):
         self.picture_label.bind("<Button-1>", self.handle_mouse_click)
         self.name_text_label.bind("<Button-1>", self.handle_mouse_click)
 
-    def handle_mouse_click(self, event_data):
+    def handle_mouse_click(self, _):
         if self.on_click_command:
             self.on_click_command(self.candidate_name, self)
 

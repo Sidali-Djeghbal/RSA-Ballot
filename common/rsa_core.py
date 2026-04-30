@@ -1,22 +1,19 @@
 import hashlib
 
-# convert candidate name to integer so we can do math
-def text_to_int(candidate_text):
-    mapping = {
+voter_number_mapping = {
         "Candidate A": 10,
         "Candidate B": 20,
         "Candidate C": 30
-    }
-    return mapping.get(candidate_text, 99)
+        }
+
+# convert candidate name to integer so we can do math
+def text_to_int(candidate_text: str) -> int | None:
+    return voter_number_mapping.get(candidate_text)
 
 # convert back to text
-def int_to_text(candidate_number):
-    mapping = {
-        10: "Candidate A",
-        20: "Candidate B",
-        30: "Candidate C"
-    }
-    return mapping.get(candidate_number, "Unknown")
+def int_to_text(candidate_number: int) -> str | None:
+    inv_mapping = {v: k for k, v in voter_number_mapping.items()}
+    return inv_mapping.get(candidate_number)
 
 # rsa encryption c = m^e mod n
 def encrypt(message_int, public_e, public_n):
