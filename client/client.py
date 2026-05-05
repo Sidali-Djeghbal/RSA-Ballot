@@ -20,6 +20,8 @@ CANDIDATES_DESCRIPTIONS = {
 # hardcoded public keys from server
 SERVER_PUBLIC_E = 3
 SERVER_PUBLIC_N = 62857
+DEMO_MODE = int(os.getenv("DEMO_MODE", "0"))
+
 
 class CandidateCardWidget(ctk.CTkFrame):
     def __init__(self, parent_master, candidate_name, avatar_image, on_click_command=None, **kwargs):
@@ -148,12 +150,38 @@ class VotingApplicationWindow(ctk.CTk):
         self.info_label = ctk.CTkLabel(self.voting_container, text="select a candidate above.", font=("Arial", 14))
         self.info_label.grid(row=2, column=0, pady=(10, 10), padx=20, sticky="n")
 
+        current_row = 3
+        if DEMO_MODE:
+            self.build_demo_panel(current_row)
+            current_row += 1
+
         self.send_vote_button = ctk.CTkButton(self.voting_container, text="submit secure vote", command=self.process_vote_submission, height=40)
-        self.send_vote_button.grid(row=3, column=0, pady=(5, 10), padx=20, sticky="ew")
+        self.send_vote_button.grid(row=current_row, column=0, pady=(5, 10), padx=20, sticky="ew")
+        current_row += 1
 
         # warning note added to the bottom
         self.warning_note = ctk.CTkLabel(self.voting_container, text="note: voting is only once, voter can't change his vote after voting.", font=("Arial", 12, "italic"), text_color="gray60")
-        self.warning_note.grid(row=4, column=0, pady=(0, 20), padx=20, sticky="ew")
+        self.warning_note.grid(row=current_row, column=0, pady=(0, 20), padx=20, sticky="ew")
+
+    def build_demo_panel(self, row_index):
+        demo_frame = ctk.CTkFrame(self.voting_container, corner_radius=10, fg_color=("gray95", "gray13"))
+        demo_frame.grid(row=row_index, column=0, padx=20, pady=(5, 10), sticky="ew")
+        demo_frame.grid_columnconfigure(0, weight=1)
+
+        demo_title = ctk.CTkLabel(demo_frame, text="demo mode: packet anatomy", font=("Arial", 13, "bold"))
+        demo_title.grid(row=0, column=0, pady=(8, 2), padx=12, sticky="w")
+
+        self.anatomy_id_label = ctk.CTkLabel(demo_frame, text="voter_id: (pending)", font=("Arial", 12))
+        self.anatomy_id_label.grid(row=1, column=0, padx=12, sticky="w")
+
+        self.anatomy_cipher_label = ctk.CTkLabel(demo_frame, text="encrypted_vote: (pending)", font=("Arial", 12), wraplength=520, justify="left")
+        self.anatomy_cipher_label.grid(row=2, column=0, padx=12, sticky="w")
+
+        self.anatomy_signature_label = ctk.CTkLabel(demo_frame, text="signature: (pending)", font=("Arial", 12), wraplength=520, justify="left")
+        self.anatomy_signature_label.grid(row=3, column=0, padx=12, pady=(0, 6), sticky="w")
+
+        spacer = ctk.CTkLabel(demo_frame, text="", font=("Arial", 8))
+        spacer.grid(row=4, column=0, padx=12, pady=(0, 8), sticky="w")
 
     # load image from assets folder
     def load_avatar_asset(self):
@@ -222,6 +250,10 @@ class VotingApplicationWindow(ctk.CTk):
             "encrypted_vote": cipher_integer,
             "signature": signature_integer
         }
+        if DEMO_MODE:
+            self.anatomy_id_label.configure(text=f"voter_id: {student_voter_id}")
+            self.anatomy_cipher_label.configure(text=f"encrypted_vote: {cipher_integer}")
+            self.anatomy_signature_label.configure(text=f"signature: {signature_integer}")
         
         # send to server
         voting_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
